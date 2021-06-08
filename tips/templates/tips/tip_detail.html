@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container-fluid ms-3 mt-5 ps-lg-5">
+    <section class="ps-5 pt-5 col-lg-6 border rounded-3 rounded-bottom border-4 border-dark bg-dark text-success" style="min-height: 20rem">
+      <h3 class="glyphicon-font">Python Tip for {{ object.timestamp }} </h3>
+      <h4 class="">{{  object.tags.all|join:', '  }}</h4>
+      <div class="row">
+        <div class="col-sm-12 col-lg-6">
+          {{ object.tip|urlize|title }}
+        </div>
+      </div>
+    </section>
+    <section class="mt-5">
+    {% if rel_tips %}
+      <h3 class="">Related Python Tips</h3>
+      <div class="row row-cols-auto">
+        {% for tip in rel_tips %}
+          <div class="col-auto mt-3">
+            {% include 'tips/tip.html' with tip=tip %}
+          </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+   </section>
+    <section class="mt-5">
+    <h3> Latest Python Tips </h3>
+    <div class="row row-cols-auto" >
+      {% for tip in recent %}
+        <div class="col-auto mt-3">
+          {% include 'tips/tip.html' with tip=tip %}
+        </div>
+      {% endfor %}
+    </div>
+   </section>
+  </div>
+
+
+{% endblock content %}

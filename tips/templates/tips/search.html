@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container-fluid mt-4 ps-lg-5 mb-5">
+    <h2 class="ms-5">Search Results for {{ query|title }}</h2>
+    <div class="row row-cols-auto d-flex justify-content-evenly">
+      {% for tip in tips %}
+        <div class="col-auto mt-3 ">
+          {% include 'tips/tip.html' with tip=tip %}
+        </div>
+      {% endfor %}
+    </div>
+    {% if res %}
+      <h4 class="ms-5">We could not find a fit for your search. Here are Some fantastic tips that will make your day</h4>
+      <h4></h4>
+      <div class="row row-cols-auto d-flex justify-content-evenly">
+        {% for tip in res %}
+          <div class="col-auto mt-3">
+            {% include 'tips/tip.html' with tip=tip %}
+          </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+  </div>
+{% endblock content %}

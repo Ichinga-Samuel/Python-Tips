@@ -1,0 +1,24 @@
+
+<div class="card h-100" style="width: 20rem">
+  <div class="card-header">
+    <span class="h6">{{ tip.timestamp|date:'M d Y' }}</span>
+    <span class="h6">{{ tip.tags.all|join:', ' }}</span>
+  </div>
+  <div class="card-body">
+  <details>
+    <summary><h6>{{ tip }}</h6></summary>
+    <p class="card-text">{{ tip.tip|truncatewords:'20'|cut:'>>>'|urlizetrunc:'20' }}</p>
+  </details>
+  </div>
+  <div class="card-footer">
+    <h5>Links</h5>
+    <div class="">
+      {% for link in tip.links_set.all %}
+          <a href="{{ link.name }}" class="card-link">Link{{ forloop.counter }}</a>
+          {% empty %}
+            <span>No Links</span>
+      {% endfor %}
+      <a href="{{tip.get_absolute_url}}" class="btn btn-outline-success bg-dark">Read</a>
+    </div>
+  </div>
+</div>
