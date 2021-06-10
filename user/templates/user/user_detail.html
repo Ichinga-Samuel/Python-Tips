@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container-fluid ms-3 mt-5 ps-lg-5">
+  <section class="mt-5">
+     {% if profile.favourites.all %}
+       <h3 class="">Your Favourite Python Tips</h3>
+    <div class="row row-cols-auto">
+      {% for tip in profile.favourites.all %}
+      <div class="col-auto mt-3">
+        {% include 'tips/tip.html' with tip=tip %}
+      </div>
+    {% endfor %}
+    </div>
+  {% endif %}
+  </section>
+  <section class="mt-5">
+    <h3> Latest Python Tips </h3>
+    <div class="row row-cols-auto" >
+      {% for tip in tips %}
+        <div class="col-auto mt-3">
+          {% include 'tips/tip.html' with tip=tip %}
+        </div>
+      {% endfor %}
+    </div>
+   </section>
+  </div>
+{% endblock content %}

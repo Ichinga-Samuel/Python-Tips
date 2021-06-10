@@ -3,5 +3,5 @@
 
   Please click on the link below to activate your account
 
-  http://{{ domain }}{% url 'password_reset' uidb64=uid token=token %}
+  http://{{ domain }}{% url 'user:activate' uidb64=uid token=token %}
 {% endautoescape %}

@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.conf import settings
 from django.core.mail import send_mail
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from tips.models import Tips
 
@@ -64,3 +66,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def is_superuser(self):
         return self.is_admin
+
+
+@receiver(post_save, sender=User)
+def update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance, username=instance.email)
+    instance.profile.save()

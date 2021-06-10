@@ -1,4 +1,8 @@
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.contrib import messages
 from django.shortcuts import render
+from django.db.models import Q
 from django.views.generic import ListView, TemplateView, DetailView
 from tips.models import Tips, Tags, Links
 
@@ -18,12 +22,10 @@ class TipDetail(DetailView):
         context = super().get_context_data()
         tags = self.object.tags.all()
         if tags:
-            tags = [Tags.objects.filter(name__exact='%s' %tag.name) for tag in tags]
-            tips_set = [i.tips_set.all() for tag in tags for i in tag]
-            tips_ = [tip for tips in tips_set for tip in tips]
+            tips_set = [tag.tips_set.all() for tag in tags]
+            tips_ = [*{tip for tips in tips_set for tip in tips}]  # use set to remove duplicates
             context['rel_tips'] = tips_[:10]
         context['recent'] = Tips.objects.all()[:5]
-
         return context
 
 
@@ -35,18 +37,15 @@ class TagsView(TemplateView):
     def get_queryset(self):
         tag = self.kwargs['tag']
         try:
-            self.tags = Tags.objects.filter(name__iregex=r'.*%s.*' %tag)
-            self.tips = Tips.objects.filter(tip__iregex=r'.*%s.*' %tag)
+            self.tips = Tips.objects.filter(Q(tip__iregex=r'.*%s.*' %tag)|Q(tags__name__iregex=r'.*%s.*' %tag)).distinct()
         except Exception as err:
-            self.tags, self.tips = [], []
+            self.tips = []
             print(err)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.get_queryset()
-        tips = [i.tips_set.all() for i in self.tags]
-        s1 = [tip for tipq in tips for tip in tipq]
-        context['tips'] = {*s1, *self.tips}
+        context['tips'] = self.tips
         context['tag'] = self.kwargs['tag']
 
         return context
@@ -60,20 +59,26 @@ class SearchView(TemplateView):
         tag = self.request.GET.get('q', '')
         self.query = tag
         try:
-             self.tags = Tags.objects.filter(name__iregex=r'.*%s.*' % tag)   # No search Results for
-             self.tips = Tips.objects.filter(tip__iregex=r'.*%s.*' % tag)
+             self.tips = Tips.objects.filter(Q(tip__iregex=r'.*%s.*' %tag)|Q(tags__name__iregex=r'.*%s.*' %tag)).distinct()
         except Exception as err:
-            self.tags, self.tips = [], []
+            self.tips = []
             print(err)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.get_queryset()
-        tips = [i.tips_set.all() for i in self.tags]
-        s1 = [tip for tipq in tips for tip in tipq]
-        tips = {*s1, *self.tips}
-        context['tips'] = tips
+        context['tips'] = self.tips
         context['query'] = self.query
-        if not tips:
+        if not self.tips:
             context['res'] = Tips.objects.all()[:20]
         return context
+
+
+@login_required
+def like(request, pk):
+    pro = request.user.profile
+    tip = Tips.objects.get(pk=pk)
+    if tip not in pro.favourites.all():
+        pro.favourites.add(tip)
+    # messages.add_message(request, messages.INFO, 'Bookmarked')
+    return HttpResponse(status=204)
