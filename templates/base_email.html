@@ -1,0 +1,42 @@
+{% load inlinecss %}
+{% load static %}
+{% inlinecss "css/email.css" %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Daily Python Tips</title>
+  </head>
+  <body>
+    <table class="main">
+      <tr>
+        <td class="head">
+          Daily Python Tips
+        </td>
+      </tr>
+      <tr>
+        <td class="user">
+          {% block user %}
+          {% endblock user %}
+        </td>
+      </tr>
+      <tr>
+        <td class="inform">
+          {% block info %}
+          {% endblock info %}
+        </td>
+      </tr>
+      <tr>
+        <td class="msg">
+          {% block msg %}
+          {% endblock msg %}
+        </td>
+      </tr>
+      <tr>
+        <td class="copy">
+          <p>Daily Python Tips © 2016. All Tips reserved.</p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+{% endinlinecss %}

@@ -1,0 +1,56 @@
+
+:root{
+    box-sizing: border-box;
+}
+
+body{
+    background-color:white;
+    color: black;
+    font-size: 12px;
+    padding: 20px 0;
+    margin: auto;
+    font-family: "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
+}
+
+.main{
+    max-width: 90vw;
+    margin: auto;
+}
+
+.head{
+    text-align: center;
+    font-size: 32px;
+    height: 100%;
+}
+
+.msg{
+    text-align: start;
+    padding-left: 3%;
+}
+
+.btn1{
+    border-radius: 5%;
+    background-color: royalblue;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+}
+
+.copy{
+    background: oldlace;
+    margin: 2px 0 0;
+    text-align: center;
+    padding-left: 3%;
+
+}
+.user{
+    text-align: start;
+    padding-left: 3%;
+    text-transform: uppercase;
+}
+.inform{
+    padding-left: 3%;
+}
+table{
+    border-spacing: 10px;
+}

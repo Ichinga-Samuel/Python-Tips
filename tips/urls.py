@@ -10,3 +10,4 @@ urlpatterns = [
     path('', TipsView.as_view(), name='main'),
     path('tips/<int:pk>/', TipDetail.as_view(), name='tip'),
 ]
+

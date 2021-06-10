@@ -1,0 +1,15 @@
+
+{% extends 'base_email.html' %}
+  {% block info %}
+  {% endblock info %}
+  {% block user %}
+    <p>Hi <strong>{{ user.email }}</strong></p>
+  {% endblock user %}
+  {% block msg %}
+    <p>Thank you for registering with us</p>
+    <p>Validate your email address to activate your Daily Python Tips account. Simply click the following button</p>
+    <a class="btn1" href="http://{{ domain }}{% url 'user:activate' uidb64=uid token=token %}">Activate</a>
+    <p>If the link is not working, copy this URL into your browser: http://{{ domain }}{% url 'user:activate' uidb64=uid token=token %}</p>
+  {% endblock msg %}
+
+
