@@ -1,12 +1,5 @@
 
 <div class="card h-100" style="width: 20rem">
-  {% if messages %}
-<ul class="messages">
-{% for message in messages %}
-<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-{% endfor %}
-</ul>
-{% endif %}
   <div class="card-header">
     <span class="h6">{{ tip.timestamp|date:'M d Y' }}</span>
     <span class="h6">{{ tip.tags.all|join:', ' }}</span>
@@ -29,9 +22,11 @@
       </div>
       <div class="d-flex justify-content-end">
         <a href="{{tip.get_absolute_url}}" class="btn-sm btn-outline-success bg-dark">Read</a>
-        <a href="{% url 'tips:like' tip.pk %}" class="btn-sm btn-outline-primary bg-dark">like</a>
+        <span class=""><span><i data-url="{% url 'tips:like' tip.pk %}" class="ms-1 like fa fa-thumbs-up"></i></span><span class="badge text-dark" id="like{{ tip.pk }}">{{ tip.likes }}</span>
+        <span><i data-url="{% url 'tips:dislike' tip.pk %}" class="ms-1 like fa fa-thumbs-down"></i><span class="badge text-dark" id="dislike{{ tip.pk }}">{{ tip.retweets }}</span></span>
+        </span>
       </div>
-
     </div>
   </div>
 </div>
+

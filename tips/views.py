@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.shortcuts import render
 from django.db.models import Q
@@ -80,5 +80,20 @@ def like(request, pk):
     tip = Tips.objects.get(pk=pk)
     if tip not in pro.favourites.all():
         pro.favourites.add(tip)
-    # messages.add_message(request, messages.INFO, 'Bookmarked')
-    return HttpResponse(status=204)
+        pro.save()
+        tip.likes += 1
+        tip.save()
+    return JsonResponse({'update': tip.likes})
+
+
+@login_required
+def dislike(request, pk):
+    pro = request.user.profile
+    tip = Tips.objects.get(pk=pk)
+    if tip in pro.favourites.all():
+        pro.favourites.remove(tip)
+        pro.save()
+    tip.retweets += 1
+    tip.save()
+    return JsonResponse({'update': tip.retweets})
+

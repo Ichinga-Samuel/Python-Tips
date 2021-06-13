@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from allauth.socialaccount.signals import social_account_added, pre_social_login
 
 from tips.models import Tips
 
@@ -73,3 +74,8 @@ def update_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance, username=instance.email)
     instance.profile.save()
+
+
+# @receiver(pre_social_login)
+# def test(request, sociallogin, **kwargs):
+#     print(sociallogin)

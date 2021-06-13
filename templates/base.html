@@ -5,9 +5,29 @@
   <meta charset="UTF-8">
   <title>{% block title %}Python Tips {% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+  <script defer src="{% static 'js/all.min.js' %}"></script>
   <script defer src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </head>
 <body>
+  <script>
+    document.addEventListener('readystatechange', e =>{
+        if(e.target.readyState === "complete"){
+          let elems = document.getElementsByClassName('like')
+          for(let el of elems){
+            el.addEventListener('click', async e => {
+              let url = el.getAttribute('data-url')
+              let res = await fetch(url)
+              res = await res.json()
+              let id = `${url.split('/').slice(1,3).join('')}`
+              let n = document.getElementById(id)
+              n.innerText = res.update
+
+    })
+        }
+    }
+    })
+</script>
   {% block header %}
     <header>
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
@@ -39,7 +59,7 @@
       </nav>
     </header>
   {% endblock header%}
-  {% block content %}
+    {% block content %}
   {% endblock content %}
   {% block paginate %}
     {% if is_paginated %}
